@@ -5,6 +5,9 @@ import (
 	"game/types"
 	"time"
 
+	draw "game/modules/draw"
+	playerHandler "game/modules/player"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -21,16 +24,22 @@ const (
 
 	chestTileWidth  = 48 // wielkość klatki (img) (chest)
 	chestTileHeight = 48 // wielkość klatki (img) (chest)
+
+	eqFramesCooldown = 15
 )
 
 var (
 	runing   = true
 	bkgColor = rl.NewColor(147, 211, 196, 255)
 
-	texture      rl.Texture2D
-	grassSprite  rl.Texture2D
-	chestSprite  rl.Texture2D
-	playerSprite rl.Texture2D
+	texture         rl.Texture2D
+	grassSprite     rl.Texture2D
+	chestSprite     rl.Texture2D
+	playerSprite    rl.Texture2D
+	hareSprite      rl.Texture2D
+	eqSprite        rl.Texture2D
+	eqBookSprite    rl.Texture2D
+	eqBookSideIcons rl.Texture2D
 
 	// grafika gracza
 	playerSrc rl.Rectangle
@@ -74,6 +83,14 @@ var (
 	playerInputs = make(map[string]types.PlayerState)
 	ticker       *time.Ticker
 	stopTicker   chan struct{}
+
+	// buttons
+	eqOpen bool = false
+
+	// stats
+	playerObj types.PlayerObj
+
+	buttonList types.ButtonList
 )
 
 func isCollision(x, y int) bool {
@@ -88,9 +105,41 @@ func render() {
 	rl.BeginMode2D(cam)
 
 	drawScene()
+	draw.DrawUI(
+		playerObj,
+		cam,
+		hareSprite,
+		eqBookSprite,
+		eqOpen,
+		&buttonList,
+	)
 
 	rl.EndMode2D()
 	rl.EndDrawing()
+}
+
+func HandleButtons(buttons *types.ButtonList) {
+	mousePosition := rl.GetMousePosition()
+
+	// TODO click cooldown 15klatek
+	// efekt najechania na przycisk ma być spritem z assetow
+
+	for _, button := range *buttons {
+		isMouseOverButton := rl.CheckCollisionPointRec(mousePosition, button.Rect)
+
+		// Zmiana koloru, jeśli kursor nad przyciskiem
+		if isMouseOverButton {
+			rl.DrawRectangleRec(button.Rect, button.OverColor)
+
+			// Jeśli lewy przycisk myszy został wciśnięty
+			if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+				button.Action() // Wywołanie przypisanej akcji
+			}
+		} else {
+			// Normalny kolor przycisku
+			rl.DrawRectangleRec(button.Rect, button.Color)
+		}
+	}
 }
 
 func game_init() {
@@ -100,6 +149,10 @@ func game_init() {
 
 	grassSprite = rl.LoadTexture("assets/Tilesets/Grass.png")
 	chestSprite = rl.LoadTexture("assets/Objects/Chest.png")
+	hareSprite = rl.LoadTexture("assets/Objects/hart.png")
+	eqSprite = rl.LoadTexture("assets/2 SpriteSheet/Png/Paper UI/Folding & Cutout/1.png")
+	eqBookSprite = rl.LoadTexture("assets/Pixel_Paper_v1.0/2 Spritesheet/1.png")
+	eqBookSideIcons = rl.LoadTexture("assets/Pixel_Paper_v1.0/2 Spritesheet/22.png")
 
 	tileDest = rl.NewRectangle(0, 0, 16, 16)
 
@@ -125,6 +178,10 @@ func game_init() {
 		camRotation, camZoom,
 	)
 
+	// init player stats
+	// todo sync with server init stats
+	playerObj = playerHandler.GetDefaultStats()
+
 	loadMap("one.map")
 
 }
@@ -132,12 +189,23 @@ func game_init() {
 func quit() {
 	rl.UnloadTexture(grassSprite)
 	rl.UnloadTexture(chestSprite)
+	rl.UnloadTexture(eqSprite)
+	rl.UnloadTexture(eqBookSprite)
+	rl.UnloadTexture(eqBookSideIcons)
+	rl.UnloadTexture(hareSprite)
 	rl.UnloadTexture(playerSprite)
 	rl.UnloadMusicStream(music)
 	rl.CloseAudioDevice()
 	rl.CloseWindow()
 }
 
+/*
+TODO
+informacja o hp gracza
+informacja czy gracz ma otworzone eq
+
+	> jeżeli tak dodawać jakąś ikonkę np 3 kropek nad graczem
+*/
 func sendPosition(force bool) {
 	if force {
 		fmt.Print("force data update")
@@ -192,6 +260,7 @@ func StartGame() {
 
 	for runing {
 		input()
+		HandleButtons(&buttonList)
 		update()
 		sendPosition(false)
 		render()

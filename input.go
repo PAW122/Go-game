@@ -4,6 +4,10 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
+var (
+	eqOpenCooldown int16 = eqFramesCooldown
+)
+
 func input() {
 	if rl.IsKeyDown(rl.KeyW) || rl.IsKeyDown(rl.KeyUp) {
 		playerMoving = true
@@ -32,4 +36,16 @@ func input() {
 	if rl.IsKeyPressed(rl.KeyP) {
 		musicPasued = !musicPasued
 	}
+
+	// open / close eq
+	if rl.IsKeyDown(rl.KeyE) && eqOpenCooldown < 1 {
+		eqOpenCooldown = 15
+		eqOpen = !eqOpen
+	}
+
+	if eqOpenCooldown < -30768 {
+		eqOpenCooldown = 0
+	}
+
+	eqOpenCooldown--
 }

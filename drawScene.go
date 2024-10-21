@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strconv"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -53,7 +52,7 @@ func drawScene() {
 	}
 
 	// narysuj postać gracza
-	fmt.Printf("Drawing Local player at (%f, %f)\n", playerDest.X, playerDest.Y)
+	//fmt.Printf("Drawing Local player at (%f, %f)\n", playerDest.X, playerDest.Y)
 	rl.DrawTexturePro(playerSprite,
 		playerSrc, playerDest,
 		rl.NewVector2(playerDest.Width/2, playerDest.Height/2),
@@ -61,10 +60,10 @@ func drawScene() {
 	)
 
 	// Debugowanie: Sprawdź liczba graczy i ich stan
-	fmt.Printf("Number of players: %d\n", len(playersMap))
+	//fmt.Printf("Number of players: %d\n", len(playersMap))
 
-	for id, state := range playersMap {
-		fmt.Printf("Player %s: SrcX: %f, SrcY: %f, DestX: %f, DestY: %f\n", id, state.PlayerSrcX, state.PlayerSrcY, state.X, state.Y)
+	for _, state := range playersMap {
+		//fmt.Printf("Player %s: SrcX: %f, SrcY: %f, DestX: %f, DestY: %f\n", id, state.PlayerSrcX, state.PlayerSrcY, state.X, state.Y)
 
 		// Tworzenie nowego prostokąta dla pozycji gracza z serwera
 		newPlayerDest := rl.NewRectangle(float32(state.X), float32(state.Y), playerDest.Width, playerDest.Height)
