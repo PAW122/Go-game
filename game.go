@@ -91,6 +91,9 @@ var (
 	playerObj types.PlayerObj
 
 	buttonList types.ButtonList
+
+	Settings      types.Settings
+	Defaultvolume float32 = 0.8
 )
 
 func isCollision(x, y int) bool {
@@ -112,6 +115,7 @@ func render() {
 		eqBookSprite,
 		eqOpen,
 		&buttonList,
+		&Settings,
 	)
 
 	rl.EndMode2D()
@@ -143,6 +147,8 @@ func HandleButtons(buttons *types.ButtonList) {
 }
 
 func game_init() {
+
+	Settings.AudioVolume = &Defaultvolume
 	rl.InitWindow(screenWidth, screenHeight, "Pawiu Game")
 	rl.SetExitKey(0)
 	rl.SetTargetFPS(60)
@@ -151,7 +157,7 @@ func game_init() {
 	chestSprite = rl.LoadTexture("assets/Objects/Chest.png")
 	hareSprite = rl.LoadTexture("assets/Objects/hart.png")
 	eqSprite = rl.LoadTexture("assets/2 SpriteSheet/Png/Paper UI/Folding & Cutout/1.png")
-	eqBookSprite = rl.LoadTexture("assets/Pixel_Paper_v1.0/2 Spritesheet/1.png")
+	eqBookSprite = rl.LoadTexture("assets/Pixel_Paper_v1.0/2 Spritesheet/1_v2.png")
 	eqBookSideIcons = rl.LoadTexture("assets/Pixel_Paper_v1.0/2 Spritesheet/22.png")
 
 	tileDest = rl.NewRectangle(0, 0, 16, 16)
@@ -168,6 +174,8 @@ func game_init() {
 	music = rl.LoadMusicStream("assets/Avery's Farm.mp3")
 	musicPasued = false
 	rl.PlayMusicStream(music)
+
+	Settings.MusicStream = &music
 
 	cam = rl.NewCamera2D(
 		rl.NewVector2(float32(screenWidth/2), float32(screenHeight/2)),

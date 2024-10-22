@@ -61,3 +61,8 @@ type Button struct {
 	OverColor rl.Color     // Kolor po najechaniu kursorem
 	Key       string
 }
+
+type Settings struct {
+	AudioVolume *float32
+	MusicStream *rl.Music
+}

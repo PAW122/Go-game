@@ -22,10 +22,11 @@ func DrawUI(
 	eqSprite rl.Texture2D,
 	eqOpen bool,
 	buttonList *types.ButtonList,
+	settings *types.Settings,
 ) {
 	// Najpierw rysujemy mapę, a potem UI
 	drawHpBar(playerObj, cam, heartTexture)
-	drawEq(playerObj, cam, eqSprite, eqOpen, buttonList)
+	drawEq(playerObj, cam, eqSprite, eqOpen, buttonList, settings)
 }
 
 /*
@@ -68,13 +69,13 @@ var (
 	reloadButtons  = false
 
 	// Zmienna trybu debugowania
-	debugMode bool = true
+	debugMode bool = false
 
 	transparentColor rl.Color = rl.NewColor(0, 0, 255, 0)
 )
 
 // Funkcja rysująca ekwipunek i dodająca przyciski do listy
-func drawEq(playerObj types.PlayerObj, cam rl.Camera2D, eqBookSprite rl.Texture2D, eqOpen bool, buttonList *types.ButtonList) {
+func drawEq(playerObj types.PlayerObj, cam rl.Camera2D, eqBookSprite rl.Texture2D, eqOpen bool, buttonList *types.ButtonList, settings *types.Settings) {
 	if !eqOpen {
 		if !buttonsDeleted {
 			// Usunięcie przycisków po zamknięciu
@@ -256,7 +257,7 @@ func drawEq(playerObj types.PlayerObj, cam rl.Camera2D, eqBookSprite rl.Texture2
 	}
 
 	if addSizeList[5] > 0 {
-		DrawSettings_Audio(eqBookSprite, buttonList, spriteCords)
+		DrawSettings_Audio(eqBookSprite, buttonList, spriteCords, settings)
 	}
 
 	// Powrót do trybu kamery
