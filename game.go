@@ -25,7 +25,7 @@ const (
 	chestTileWidth  = 48 // wielkość klatki (img) (chest)
 	chestTileHeight = 48 // wielkość klatki (img) (chest)
 
-	eqFramesCooldown = 15
+	eqFramesCooldown = 15 // cooldown użycia przycisku E
 )
 
 var (

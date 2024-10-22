@@ -68,7 +68,7 @@ var (
 	reloadButtons  = false
 
 	// Zmienna trybu debugowania
-	debugMode bool = false
+	debugMode bool = true
 
 	transparentColor rl.Color = rl.NewColor(0, 0, 255, 0)
 )
@@ -253,6 +253,10 @@ func drawEq(playerObj types.PlayerObj, cam rl.Camera2D, eqBookSprite rl.Texture2
 		for _, btn := range *buttonList {
 			rl.DrawRectangleLinesEx(btn.Rect, 2, rl.Red) // Czerwony obrys przycisku w trybie debugowania
 		}
+	}
+
+	if addSizeList[5] > 0 {
+		DrawSettings_Audio(eqBookSprite, buttonList, spriteCords)
 	}
 
 	// Powrót do trybu kamery
