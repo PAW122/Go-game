@@ -258,6 +258,8 @@ func drawEq(playerObj types.PlayerObj, cam rl.Camera2D, eqBookSprite rl.Texture2
 
 	if addSizeList[5] > 0 {
 		DrawSettings_Audio(eqBookSprite, buttonList, spriteCords, settings)
+	} else if addSizeList[1] > 0 {
+		DrawItemsPage(eqBookSprite, buttonList, spriteCords, settings)
 	}
 
 	// Powrót do trybu kamery

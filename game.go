@@ -149,6 +149,7 @@ func HandleButtons(buttons *types.ButtonList) {
 func game_init() {
 
 	Settings.AudioVolume = &Defaultvolume
+	Settings.ItemListMaxSlots = 64
 	rl.InitWindow(screenWidth, screenHeight, "Pawiu Game")
 	rl.SetExitKey(0)
 	rl.SetTargetFPS(60)

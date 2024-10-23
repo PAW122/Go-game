@@ -63,6 +63,7 @@ type Button struct {
 }
 
 type Settings struct {
-	AudioVolume *float32
-	MusicStream *rl.Music
+	AudioVolume      *float32
+	MusicStream      *rl.Music
+	ItemListMaxSlots int
 }

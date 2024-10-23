@@ -184,14 +184,6 @@ func drawTexture(eqBookSprite rl.Texture2D, ButtonRect rl.Rectangle, DrawSpriteC
 		rl.White)
 }
 
-/*
-narazie same przyciski
-odpowiednie sprity doda się póżnej
-*/
-func DrawSprites() {
-
-}
-
 // Buttons Click Functions ===============
 
 // id 0 - 13
