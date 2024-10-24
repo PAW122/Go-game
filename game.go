@@ -40,7 +40,7 @@ var (
 	grassSprite     rl.Texture2D
 	chestSprite     rl.Texture2D
 	playerSprite    rl.Texture2D
-	hareSprite      rl.Texture2D
+	hartSprite      rl.Texture2D
 	eqSprite        rl.Texture2D
 	eqBookSprite    rl.Texture2D
 	eqBookSideIcons rl.Texture2D
@@ -158,9 +158,11 @@ func game_init() {
 	rl.SetExitKey(0)
 	rl.SetTargetFPS(60)
 
+	playerSprite = rl.LoadTexture("assets/Characters/Basic Charakter Spritesheet.png")
+
 	grassSprite = rl.LoadTexture("assets/Tilesets/Grass.png")
 	chestSprite = rl.LoadTexture("assets/Objects/Chest.png")
-	hareSprite = rl.LoadTexture("assets/Objects/hart.png")
+	hartSprite = rl.LoadTexture("assets/Objects/hart.png")
 	eqSprite = rl.LoadTexture("assets/2 SpriteSheet/Png/Paper UI/Folding & Cutout/1.png")
 	eqBookSprite = rl.LoadTexture("assets/Pixel_Paper_v1.0/2 Spritesheet/1_v2.png")
 	eqBookSideIcons = rl.LoadTexture("assets/Pixel_Paper_v1.0/2 Spritesheet/22.png")
@@ -169,9 +171,108 @@ func game_init() {
 	// TODO przenieść to do oddzielnego package
 	// w modules
 	// package createAssetsObj i tam będą te wszsytkie rzeczy ogarniane
+
+	/*
+		do zrobienia z next textur:
+		zamienić postać na tego spritesheeta
+
+		chyba wymaga to totalnego przerobienia jak gracz/jego rysowanie działa.
+
+		obecnie w update() zą zmieniane klatki i ich pozycje z spriteSheet
+
+		TODO:
+		zmapować wszystkie animacje pod ospowiednie nazwy
+		dodać do assetManagera wybieranie animacji po nazwie
+		zależnie od tego w jaką stronę 1/2/3/4 gracz jest skierowany
+		odpalać odpowiednią animację
+	*/
+
+	AssetsManager.LoadTexture("basic_player_SpriteSheet", &playerSprite)
+	AssetsManager.CreateAsset(
+		"basic_player_Asset_obj",
+		"basic_player_SpriteSheet",
+		true,
+		assetsManager.AssetsCoordinates{
+			X:      0,
+			Y:      0,
+			Width:  48,
+			Height: 48,
+		},
+		[]assetsManager.Animation{
+			{
+				Name: "Idle_down",
+				Frames: []assetsManager.AssetsCoordinates{
+					{ // klatka 0
+						X:      0,
+						Y:      0,
+						Width:  48,
+						Height: 48,
+					},
+					{ //chyba dobrze odczytałem
+						X:      48,
+						Y:      0,
+						Width:  48,
+						Height: 48,
+					},
+				},
+			},
+			{
+				Name: "Idle_up",
+				Frames: []assetsManager.AssetsCoordinates{
+					{
+						X:      0,
+						Y:      48,
+						Width:  48,
+						Height: 48,
+					},
+					{
+						X:      48,
+						Y:      48,
+						Width:  48,
+						Height: 48,
+					},
+				},
+			},
+			{
+				Name: "Idle_left",
+				Frames: []assetsManager.AssetsCoordinates{
+					{
+						X:      0,
+						Y:      96,
+						Width:  48,
+						Height: 48,
+					},
+					{
+						X:      48,
+						Y:      96,
+						Width:  48,
+						Height: 48,
+					},
+				},
+			},
+			{
+				Name: "Idle_right",
+				Frames: []assetsManager.AssetsCoordinates{
+					{
+						X:      0,
+						Y:      144,
+						Width:  48,
+						Height: 48,
+					},
+					{
+						X:      48,
+						Y:      144,
+						Width:  48,
+						Height: 48,
+					},
+				},
+			},
+		},
+	)
+
 	AssetsManager.LoadTexture("grass_SpriteSheet", &grassSprite)
 
-	AssetsManager.LoadTexture("heart_SpriteSheet", &hareSprite)
+	AssetsManager.LoadTexture("heart_SpriteSheet", &hartSprite)
 	AssetsManager.CreateAsset(
 		"Heart_Asset_Obj",
 		"heart_SpriteSheet",
@@ -205,9 +306,9 @@ func game_init() {
 	grassTileSrc = rl.NewRectangle(0, 0, floorTileWidth, floorTileHeight)
 	chestTileSrc = rl.NewRectangle(0, 0, chestTileWidth, chestTileHeight)
 
-	playerSprite = rl.LoadTexture("assets/Characters/Basic Charakter Spritesheet.png")
-
+	// grafikaGracza
 	playerSrc = rl.NewRectangle(0, 0, frameWidth, frameHeight)
+	// pozycja na ekranie
 	playerDest = rl.NewRectangle(110, 100, 100, 100)
 
 	rl.InitAudioDevice()
@@ -240,7 +341,7 @@ func quit() {
 	rl.UnloadTexture(eqSprite)
 	rl.UnloadTexture(eqBookSprite)
 	rl.UnloadTexture(eqBookSideIcons)
-	rl.UnloadTexture(hareSprite)
+	rl.UnloadTexture(hartSprite)
 	rl.UnloadTexture(playerSprite)
 	rl.UnloadMusicStream(music)
 	rl.CloseAudioDevice()
