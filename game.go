@@ -5,6 +5,7 @@ import (
 	"game/types"
 	"time"
 
+	assetsManager "game/modules/AssetsManager"
 	draw "game/modules/draw"
 	playerHandler "game/modules/player"
 
@@ -29,7 +30,10 @@ const (
 )
 
 var (
-	runing   = true
+	runing = true
+
+	AssetsManager *assetsManager.AssetsManager = assetsManager.NewAssetManager()
+
 	bkgColor = rl.NewColor(147, 211, 196, 255)
 
 	texture         rl.Texture2D
@@ -109,9 +113,9 @@ func render() {
 
 	drawScene()
 	draw.DrawUI(
+		AssetsManager,
 		playerObj,
 		cam,
-		hareSprite,
 		eqBookSprite,
 		eqOpen,
 		&buttonList,
@@ -161,6 +165,41 @@ func game_init() {
 	eqBookSprite = rl.LoadTexture("assets/Pixel_Paper_v1.0/2 Spritesheet/1_v2.png")
 	eqBookSideIcons = rl.LoadTexture("assets/Pixel_Paper_v1.0/2 Spritesheet/22.png")
 
+	// load textures to assetManager==========================
+	// TODO przenieść to do oddzielnego package
+	// w modules
+	// package createAssetsObj i tam będą te wszsytkie rzeczy ogarniane
+	AssetsManager.LoadTexture("grass_SpriteSheet", &grassSprite)
+
+	AssetsManager.LoadTexture("heart_SpriteSheet", &hareSprite)
+	AssetsManager.CreateAsset(
+		"Heart_Asset_Obj",
+		"heart_SpriteSheet",
+		false,
+		assetsManager.AssetsCoordinates{
+			X:      0,
+			Y:      0,
+			Width:  7,
+			Height: 5,
+		},
+		nil,
+	)
+
+	AssetsManager.LoadTexture("eqSprite_SpriteSheet", &eqBookSprite)
+	AssetsManager.CreateAsset( // jeden z 8 assetow progress bara
+		"EqBook_progress_bar_empty_1_Asset_Obj",
+		"eqSprite_SpriteSheet",
+		false,
+		assetsManager.AssetsCoordinates{
+			X:      448,
+			Y:      2981,
+			Width:  12,
+			Height: 7,
+		},
+		nil,
+	)
+
+	// ==============================================
 	tileDest = rl.NewRectangle(0, 0, 16, 16)
 
 	grassTileSrc = rl.NewRectangle(0, 0, floorTileWidth, floorTileHeight)

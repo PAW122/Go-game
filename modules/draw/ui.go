@@ -4,6 +4,8 @@ import (
 	"fmt"
 	types "game/types"
 
+	assetsmanager "game/modules/AssetsManager"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -16,16 +18,16 @@ var (
 draw all ui elements
 */
 func DrawUI(
+	AssetsManager *assetsmanager.AssetsManager,
 	playerObj types.PlayerObj,
 	cam rl.Camera2D,
-	heartTexture rl.Texture2D,
 	eqSprite rl.Texture2D,
 	eqOpen bool,
 	buttonList *types.ButtonList,
 	settings *types.Settings,
 ) {
 	// Najpierw rysujemy mapę, a potem UI
-	drawHpBar(playerObj, cam, heartTexture)
+	drawHpBar(playerObj, cam, AssetsManager)
 	drawEq(playerObj, cam, eqSprite, eqOpen, buttonList, settings)
 }
 
@@ -268,10 +270,7 @@ func drawEq(playerObj types.PlayerObj, cam rl.Camera2D, eqBookSprite rl.Texture2
 
 // draw Hp bar
 // TODO zamienić na element z spritesheets do lewego gornego rogu
-func drawHpBar(playerObj types.PlayerObj, cam rl.Camera2D, heartTexture rl.Texture2D) {
-	// Pobieramy HP gracza
-	hp := playerObj.Hp
-
+func drawHpBar(playerObj types.PlayerObj, cam rl.Camera2D, AssetsManager *assetsmanager.AssetsManager) {
 	// Pozycja kamery, aby pasek życia rysować w odniesieniu do niej
 	cameraX := int32(cam.Target.X)
 	cameraY := int32(cam.Target.Y)
@@ -279,17 +278,6 @@ func drawHpBar(playerObj types.PlayerObj, cam rl.Camera2D, heartTexture rl.Textu
 	// Pozycja, w której będzie rysowana liczba HP i ikona serca
 	x := cameraX + int32(hp_bar_cords[0])
 	y := cameraY + int32(hp_bar_cords[1])
-
-	// Rysujemy liczbę HP
-	rl.DrawText(fmt.Sprintf("%d", hp), x+20, y, 10, rl.White)
-
-	// Zdefiniuj obszar tekstury, który odpowiada ikonie serca
-	heartRect := rl.Rectangle{
-		X:      0, // 5 pikseli od lewej strony
-		Y:      0, // 30 pikseli od góry
-		Width:  7, // Szerokość 7 pikseli
-		Height: 5, // Wysokość 5 pikseli
-	}
 
 	// Definiujemy, gdzie na ekranie wyświetlić ikonę serca
 	heartPosRect := rl.Rectangle{
@@ -299,14 +287,14 @@ func drawHpBar(playerObj types.PlayerObj, cam rl.Camera2D, heartTexture rl.Textu
 		Height: 10,              // Wysokość ikony na ekranie (skaluje do większych wymiarów)
 	}
 
-	// Rysujemy wyciętą część tekstury (ikonę serca)
-	rl.DrawTexturePro(
-		heartTexture,           // Tekstura
-		heartRect,              // Obszar tekstury (ikonka serca)
-		heartPosRect,           // Pozycja i rozmiar na ekranie
-		rl.Vector2{X: 0, Y: 0}, // Punkt obrotu (nie ma obrotu, więc to 0,0)
-		0,                      // Brak obrotu
-		rl.White)               // Kolor (biały, ponieważ nie chcemy zmieniać koloru tekstury)
+	heart_obj, err := AssetsManager.GetAssetObj("Heart_Asset_Obj")
+	if err != nil {
+		fmt.Println("AssetManager ui.go:293 error")
+		return
+	}
+
+	rl.DrawText(fmt.Sprintf("%d", playerObj.Hp), x+20, y, 10, rl.White)
+	heart_obj.DrawTextureFromData_Idle(heartPosRect)
 }
 
 func OpenBlankBook_Button() {

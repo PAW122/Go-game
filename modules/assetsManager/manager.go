@@ -8,11 +8,23 @@ import (
 
 /*
 	TODO
-	asset handler do któego w main dodamy textury/dane:
-	AssetsObj.Name
-	AssetsObj.SrcFileData
+	funkcja
+	.Resize() do nadpisywania wielkości obrazka z textury
+	.Color() przyjmowało by coś na styl rl.White czy coś
 
-	a potem w odpowiednich plikach tylko pobierać
+	ustawianie pozycji na ekranie przy tworzenie defaultowego sprita w init
+	dla statycznych spritow
+
+	dodać funkcję "debug"
+	która po uruchomieniu na całym ekranie stworzy scrolowalną listę elementów/assetów
+	z podpisami np:
+	"Heart_Asset_Obj" from "heart_SpriteSheet"
+	animated: false
+	frames: 0
+	frame: 0
+	<heart img>
+
+	i jak coś jest animowane to po kolei wszystkie możliwe animacje
 */
 
 type SpritesObj struct {
