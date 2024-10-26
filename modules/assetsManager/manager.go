@@ -25,6 +25,14 @@ import (
 	<heart img>
 
 	i jak coś jest animowane to po kolei wszystkie możliwe animacje
+
+
+	TODO:
+	podzielić assesMaanagera
+	na 2 części:
+	funkcje do zarządzania asetami
+	i
+	funkcje do rysowania objektów na podstawie danych z am
 */
 
 type SpritesObj struct {
@@ -48,6 +56,7 @@ type AssetsObj struct {
 	AnimationIndex int
 }
 
+// add optional animationFrameCooldown w AssetsObj
 func (asset *AssetsObj) NextAnimationFrame() {
 	// jeżeli jesteśmy na ostatniej klatce
 	if len(asset.Animations[asset.AnimationIndex].Frames) >= asset.AnimationFrame {
@@ -96,6 +105,31 @@ func (asset *AssetsObj) DrawTextureFromData_Animation(onScreenPosition rl.Rectan
 
 	// increse frame count
 	asset.NextAnimationFrame()
+}
+
+// Draw texture from fromData
+// todo
+// zrobić to tak aby można było podawać pozycję wewnątrz assetu postaci gracza
+// tak jak jest liczone PaperBook left top corner tak samo liczyć sprita gracza
+// ustalić opcjonalne predefiniowane punkty na spricie gracza (zależne od rotacji lewo, prawo itp)
+// których nie trzeba obliczać poza managerem
+func (asset *AssetsObj) DrawTFD_ItemInHand(onScreenPOsition rl.Rectangle, rotation Rotation) {
+
+	onSpritePosition = rl.Rectangle{
+		X:      asset.Animations[asset.AnimationIndex].Frames[asset.AnimationFrame].X,
+		Y:      asset.Animations[asset.AnimationIndex].Frames[asset.AnimationFrame].Y,
+		Width:  asset.Animations[asset.AnimationIndex].Frames[asset.AnimationFrame].Width,
+		Height: asset.Animations[asset.AnimationIndex].Frames[asset.AnimationFrame].Height,
+	}
+
+	rl.DrawTexturePro(
+		asset.SrcFileData.SrcFile,
+		onSpritePosition,
+		onSpritePosition,
+		rl.Vector2{X: rotation.RotationOrigin.X, rotation.RotationOrigin.Y},
+		rotation.RotationValue,
+		rl.White,
+	)
 }
 
 // rysuj texturę na ekranie pobierając ją na podstawie asset.SrcFileName
