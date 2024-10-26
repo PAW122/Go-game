@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
+	assetsmanager "game/modules/AssetsManager"
 )
 
 func drawScene() {
@@ -53,6 +54,8 @@ func drawScene() {
 
 	// narysuj postać gracza
 	//fmt.Printf("Drawing Local player at (%f, %f)\n", playerDest.X, playerDest.Y)
+
+
 	rl.DrawTexturePro(playerSprite,
 		playerSrc, playerDest,
 		rl.NewVector2(playerDest.Width/2, playerDest.Height/2),

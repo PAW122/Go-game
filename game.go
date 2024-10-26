@@ -111,7 +111,7 @@ func render() {
 	rl.ClearBackground(bkgColor)
 	rl.BeginMode2D(cam)
 
-	drawScene()
+	drawScene(&AssetsManager)
 	draw.DrawUI(
 		AssetsManager,
 		playerObj,
@@ -410,7 +410,7 @@ func StartGame() {
 	for runing {
 		input()
 		HandleButtons(&buttonList)
-		update()
+		update(&AssetsManager)
 		sendPosition(false)
 		render()
 

@@ -113,9 +113,9 @@ func (asset *AssetsObj) DrawTextureFromData_Animation(onScreenPosition rl.Rectan
 // tak jak jest liczone PaperBook left top corner tak samo liczyć sprita gracza
 // ustalić opcjonalne predefiniowane punkty na spricie gracza (zależne od rotacji lewo, prawo itp)
 // których nie trzeba obliczać poza managerem
-func (asset *AssetsObj) DrawTFD_ItemInHand(onScreenPOsition rl.Rectangle, rotation Rotation) {
+func (asset *AssetsObj) DrawTFD_ItemInHand(onScreenPosition rl.Rectangle, rotation Rotation) {
 
-	onSpritePosition = rl.Rectangle{
+	onSpritePosition := rl.Rectangle{
 		X:      asset.Animations[asset.AnimationIndex].Frames[asset.AnimationFrame].X,
 		Y:      asset.Animations[asset.AnimationIndex].Frames[asset.AnimationFrame].Y,
 		Width:  asset.Animations[asset.AnimationIndex].Frames[asset.AnimationFrame].Width,
@@ -125,8 +125,8 @@ func (asset *AssetsObj) DrawTFD_ItemInHand(onScreenPOsition rl.Rectangle, rotati
 	rl.DrawTexturePro(
 		asset.SrcFileData.SrcFile,
 		onSpritePosition,
-		onSpritePosition,
-		rl.Vector2{X: rotation.RotationOrigin.X, rotation.RotationOrigin.Y},
+		onScreenPosition,
+		rl.Vector2{X: rotation.RotationOrigin.X, Y: rotation.RotationOrigin.Y},
 		rotation.RotationValue,
 		rl.White,
 	)
