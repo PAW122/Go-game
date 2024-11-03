@@ -44,6 +44,7 @@ var (
 	eqSprite        rl.Texture2D
 	eqBookSprite    rl.Texture2D
 	eqBookSideIcons rl.Texture2D
+	itemsBasicTools rl.Texture2D
 
 	// grafika gracza
 	playerSrc rl.Rectangle
@@ -166,7 +167,21 @@ func game_init() {
 	eqSprite = rl.LoadTexture("assets/2 SpriteSheet/Png/Paper UI/Folding & Cutout/1.png")
 	eqBookSprite = rl.LoadTexture("assets/Pixel_Paper_v1.0/2 Spritesheet/1_v2.png")
 	eqBookSideIcons = rl.LoadTexture("assets/Pixel_Paper_v1.0/2 Spritesheet/22.png")
+	itemsBasicTools = rl.LoadTexture("assets/Objects/Basic_tools_and_meterials.png")
 
+	AssetsManager.LoadTexture("items_basic_SpriteSheet", &itemsBasicTools)
+	AssetsManager.CreateAsset(
+		"items_basic_axe_obj",
+		"items_basic_SpriteSheet",
+		false,
+		assetsManager.AssetsCoordinates{
+			X:      17,
+			Y:      0,
+			Width:  16,
+			Height: 16,
+		},
+		nil,
+	)
 	// load textures to assetManager==========================
 	// TODO przenieść to do oddzielnego package
 	// w modules
@@ -341,6 +356,7 @@ func quit() {
 	rl.UnloadTexture(eqSprite)
 	rl.UnloadTexture(eqBookSprite)
 	rl.UnloadTexture(eqBookSideIcons)
+	rl.UnloadTexture(itemsBasicTools)
 	rl.UnloadTexture(hartSprite)
 	rl.UnloadTexture(playerSprite)
 	rl.UnloadMusicStream(music)

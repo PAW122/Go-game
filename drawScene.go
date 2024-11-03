@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"math"
 	"strconv"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -58,6 +60,60 @@ func drawScene() {
 		rl.NewVector2(playerDest.Width/2, playerDest.Height/2),
 		0, rl.White,
 	)
+
+	// TODO
+	/*
+		zrobić funkcję w am do obsługi broni + z funkcją attack animation
+		+ mają brać poprawkę na obrut gracza, jego pozycję itp
+		(rysować razem z graczem w draw)
+		(dla multika musi się zgadzać)
+
+		albo użyć animacja atakowania z graczem w 1 spricie
+
+	*/
+	// item in hand ============================================
+
+	// narysuj item w dłoni gracza
+	axe_obj, err := AssetsManager.GetAssetObj("items_basic_axe_obj")
+	if err != nil {
+		fmt.Println("ERROR Drawscene.go : 66 axe_obj")
+		return
+	}
+
+	cameraX := int32(cam.Target.X)
+	cameraY := int32(cam.Target.Y)
+	x := cameraX + int32(40)
+	y := cameraY + int32(55)
+
+	// oblicz kąt obrotu przedmiotu tak aby był skierowany
+	// w stronę kursora
+	// Pozycja kamery (celowanie w środek ekranu)
+	sc_mid_X := float32(rl.GetScreenWidth()) / 2
+	sc_mid_Y := float32(rl.GetScreenHeight()) / 2
+	// Pozycja kursora
+	mouseX := float32(rl.GetMouseX())
+	mouseY := float32(rl.GetMouseY())
+	// Oblicz różnicę współrzędnych między środkiem ekranu a kursorem
+	deltaX := mouseX - sc_mid_X
+	deltaY := mouseY - sc_mid_Y
+	// Oblicz kąt w radianach i przekonwertuj na stopnie
+	angleRad := math.Atan2(float64(deltaY), float64(deltaX))
+	angleDeg := float32(angleRad * (180 / math.Pi))
+
+	axe_obj.DrawTextureFromData_Idle(rl.Rectangle{})
+
+	item_position := rl.Rectangle{
+		X:      float32(x), // Pozycja X na ekranie (obok liczby HP)
+		Y:      float32(y), // Pozycja Y na ekranie
+		Width:  16 * 1.5,   // Szerokość ikony na ekranie (skaluje do większych wymiarów)
+		Height: 16 * 1.5,   // Wysokość ikony na ekranie (skaluje do większych wymiarów)
+	}
+	axe_obj.Rotation.RotationValue = angleDeg + 100
+	axe_obj.Rotation.RotationOrigin.X = item_position.Width / 2
+	axe_obj.Rotation.RotationOrigin.Y = item_position.Height / 2
+	axe_obj.DrawTextureFromData_Idle(item_position)
+
+	// item in hand ============================================
 
 	// Debugowanie: Sprawdź liczba graczy i ich stan
 	//fmt.Printf("Number of players: %d\n", len(playersMap))
