@@ -43,6 +43,18 @@ func input() {
 		eqOpen = !eqOpen
 	}
 
+	if rl.IsMouseButtonPressed(rl.MouseButtonLeft) {
+		playerLeftClick = true
+	} else {
+		playerLeftClick = false
+	}
+
+	if rl.IsMouseButtonPressed(rl.MouseButtonRight) {
+		playerRightClick = true
+	} else {
+		playerRightClick = false
+	}
+
 	if eqOpenCooldown < -30768 {
 		eqOpenCooldown = 0
 	}

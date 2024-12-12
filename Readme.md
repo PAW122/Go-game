@@ -11,8 +11,15 @@
         > można było pobrać ich dane z nazwy np GetItemData(<name>)
 
     + na tej liście mozna też zrobić te stronkę z itemList w Book.
+    + udostępnianie danych
+        > ma posiadać swoje zmienne lokalne zamiast globalnych
+        > ma udostęniać je funkcjami np GetSelectedItem()
 
-warstwa np dla dachy która jest wyśwetlana tylko gdy gracza pod nią nie ma
+* warstwa np dla dachy która jest wyśwetlana tylko gdy gracza pod nią nie ma
+
+* jak user będzie miał w ręce bron i kliknie lewy myszy to odpala się animacja
+    + tworzony jest box (range ataku broni w danym kierunku) sprawdzający czy będzie mial kolizję z czymś co można atakować
+        > jeżeli tak to zada obrażenia
 
 # map data
 

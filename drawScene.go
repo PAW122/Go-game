@@ -5,11 +5,12 @@ import (
 	"math"
 	"strconv"
 
-	rl "github.com/gen2brain/raylib-go/raylib"
 	assetsmanager "game/modules/AssetsManager"
+
+	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-func drawScene() {
+func drawScene(AssetsManager *assetsmanager.AssetsManager) {
 
 	// Iterowanie po warstwach
 	for l := 0; l < len(layers); l++ {
@@ -57,7 +58,6 @@ func drawScene() {
 	// narysuj postać gracza
 	//fmt.Printf("Drawing Local player at (%f, %f)\n", playerDest.X, playerDest.Y)
 
-
 	rl.DrawTexturePro(playerSprite,
 		playerSrc, playerDest,
 		rl.NewVector2(playerDest.Width/2, playerDest.Height/2),
@@ -66,20 +66,24 @@ func drawScene() {
 
 	// TODO
 	/*
-		zrobić funkcję w am do obsługi broni + z funkcją attack animation
-		+ mają brać poprawkę na obrut gracza, jego pozycję itp
-		(rysować razem z graczem w draw)
-		(dla multika musi się zgadzać)
+		przenieść do do modules/draw
+		i tutaj tylko wykonać funkcję np drawWeapons()
 
-		albo użyć animacja atakowania z graczem w 1 spricie
+			zrobić funkcję w am do obsługi broni + z funkcją attack animation
+			+ mają brać poprawkę na obrut gracza, jego pozycję itp
+			(rysować razem z graczem w draw)
+			(dla multika musi się zgadzać)
 
+			albo użyć animacja atakowania z graczem w 1 spricie
+
+			można podpatrzeć jak to np albion czy coś robi
 	*/
 	// item in hand ============================================
 
 	// narysuj item w dłoni gracza
 	axe_obj, err := AssetsManager.GetAssetObj("items_basic_axe_obj")
 	if err != nil {
-		fmt.Println("ERROR Drawscene.go : 66 axe_obj")
+		fmt.Println("ERROR Drawscene.go : 86 axe_obj")
 		return
 	}
 
@@ -103,7 +107,7 @@ func drawScene() {
 	angleRad := math.Atan2(float64(deltaY), float64(deltaX))
 	angleDeg := float32(angleRad * (180 / math.Pi))
 
-	axe_obj.DrawTextureFromData_Idle(rl.Rectangle{})
+	// axe_obj.DrawTextureFromData_Idle(rl.Rectangle{})
 
 	item_position := rl.Rectangle{
 		X:      float32(x), // Pozycja X na ekranie (obok liczby HP)

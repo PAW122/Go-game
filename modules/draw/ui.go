@@ -16,6 +16,7 @@ var (
 
 /*
 draw all ui elements
+secound draw call after drawScene
 */
 func DrawUI(
 	AssetsManager *assetsmanager.AssetsManager,

@@ -7,6 +7,7 @@ import (
 
 	assetsManager "game/modules/AssetsManager"
 	draw "game/modules/draw"
+	mouseinteraction "game/modules/interactions/mouse"
 	playerHandler "game/modules/player"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -54,6 +55,9 @@ var (
 	// 0 Down | 1 Up | 2 Left | 3 Right
 	playerDir                                     int
 	playerUp, playerDown, playerRight, playerLeft bool
+	// mouse clicks
+	playerLeftClick  bool
+	playerRightClick bool
 
 	// player animation frame
 	playerFrame int
@@ -112,7 +116,7 @@ func render() {
 	rl.ClearBackground(bkgColor)
 	rl.BeginMode2D(cam)
 
-	drawScene(&AssetsManager)
+	drawScene(AssetsManager)
 	draw.DrawUI(
 		AssetsManager,
 		playerObj,
@@ -424,11 +428,12 @@ func StartGame() {
 	game_init()
 
 	for runing {
-		input()
-		HandleButtons(&buttonList)
-		update(&AssetsManager)
-		sendPosition(false)
-		render()
+		input()                                                     // user inputs
+		HandleButtons(&buttonList)                                  // handle on screen buttons
+		mouseinteraction.UseItem(playerLeftClick, playerRightClick) // execute item usage
+		update(AssetsManager)                                       // update assets
+		sendPosition(false)                                         // send info to the server
+		render()                                                    // render changes on screen
 
 	}
 
