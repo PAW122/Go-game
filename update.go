@@ -2,9 +2,10 @@ package main
 
 import (
 	rl "github.com/gen2brain/raylib-go/raylib"
+	assetsmanager "game/modules/AssetsManager"
 )
 
-func update() {
+func update(AssetsManager *assetsmanager.AssetsManager) {
 	runing = !rl.WindowShouldClose()
 
 	var newX, newY float32
